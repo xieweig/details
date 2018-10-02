@@ -5,6 +5,7 @@
       <router-link to="/about">toAbout</router-link> |
       <router-link to="/first">toFirst</router-link> |
       <router-link to="/second">toSecond</router-link> |
+      <router-link to="/third">toThird</router-link> |
     </div>
     <router-view/>
   </div>
