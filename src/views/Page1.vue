@@ -74,7 +74,7 @@
                                     <el-input v-model="person.basic.name"></el-input>
                                 </el-form-item>
                                 <el-form-item label="AGE">
-                                    <el-input v-model="person.basic.age"></el-input>
+                                    <el-input-number v-model="person.basic.age"></el-input-number>
                                 </el-form-item>
                             </el-form>
                             <template slot="footer" class="el-dialog__footer">
@@ -91,13 +91,18 @@
                 </template>
             </el-table-column>
         </el-table>
+        <community></community>
 
     </div>
 </template>
 
 <script>
+    import community from '@/components/Community.vue'
 
     export default {
+        components:{
+            community
+        },
 
         data: function () {
             const sexes = [{
@@ -151,7 +156,7 @@
             },
             openDialog:function(row){
                 this.dialogKey=true;
-                this.person = JSON.parse(JSON.stringify(row));
+                this.person = row;
 
             },
             updates: function (row) {
