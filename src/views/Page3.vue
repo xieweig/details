@@ -6,7 +6,7 @@
         <h5>下拉菜单示例</h5>
         <el-menu class="el-menu"
                  background-color="#202020" text-color="#fff" active-text-color="#aaa"
-                 :default-active="$router.path" router>
+                 :default-active="$router.path" router="true">
             <el-menu-item index="/second">form</el-menu-item>
             <el-submenu index="/hr">
                 <div slot="title">
