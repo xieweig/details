@@ -2,7 +2,7 @@
     <div class="home">
         <img alt="Vue logo" src="../assets/logo.png">
         <!--      title="ViewToModel界面（录入/修改）-->
-        <el-form ref="personForm" :model="person" label-width="12.5%" :rules="personRules">
+        <el-form ref="personForm" :model="person" label-width="40px" :rules="personRules">
             <el-form-item label="姓名String" prop="name">
                 <el-input v-model="person.name"></el-input>
             </el-form-item>
@@ -17,7 +17,8 @@
             </el-form-item>
 
             <el-form-item label="婚否Boolean">
-                <el-switch v-model="person.married"></el-switch>
+                <el-switch v-model="person.married"
+                active-text="右边为ｔｒｕｅ：已婚" inactive-text="左边：未婚"></el-switch>
             </el-form-item>
 
             <el-form-item label="出生日期Date">
@@ -71,17 +72,25 @@
                 </el-row>
                 <el-row>
                     <!--注意 这里写的js代码量就太多了 不合适，所以有一种函数叫计算函数用来盛放此处的代码-->
-                    <el-col :span="8">{{provinceEnum
+<!--                    <el-col :span="8">{{provinceEnum
                         .filter(o=>o.value===person.homeAddress.province)
-                        .map(o=>o.label)[0]}}
+                        .map(o=>o.label)[0]}}-->
+                        <el-col :span="8">{{provinceEnum
+                            .find(o => o.value === person.homeAddress.province).label}}
                     </el-col>
                     <el-col :span="2">省</el-col>
-                    <el-col :span="8">{{person.homeAddress.city}}</el-col>
+                    <el-col :span="8">{{homeAddressEx}}</el-col>
                     <el-col :span="2">市</el-col>
                 </el-row>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-info" @click="getOne">模拟从后台获取一个</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="el-icon-info" @click="articleGetOne">getArticle</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="el-icon-info" @click="articlePublish">publishArticle</el-button>
             </el-form-item>
         </el-form>
 
@@ -90,22 +99,39 @@
 
 <script>
     export default {
+        created:function(){
+            this.provinceEnum=[{
+                label: '山东',
+                value: 'shan_dong'
+            }, {
+                label: '浙江',
+                value: 'zhe_jiang'
+            }, {
+                label: '江苏',
+                value: 'jiang_su'
+            }];
+        },
+        mounted:function () {
+            this.cityEnum = ['jinan', 'yantai', 'qingdao'];
+            this.cityEnumEx=[{
+                label: '英魂济南',
+                value: 'jinan'
+            }, {
+                label: '霸气烟台',
+                value: 'yantai'
+            },{
+                label:'威武青岛',
+                value:'qingdao'
+            }];
+        },
         data() {
             return {
                 sexEnum: ['boy', 'girl', 'unclear'],
                 //java 中枚举也可以设置成map映射形式，但是一般后天不注重展示，数据库中一般用字母字符串记录，这样程序员能看懂
                 // ，不会用数字和汉字，数字很难直观明白（但是可以加减计算排序），汉字有字符串编码问题。前台展示则要充分为用户考虑
-                provinceEnum: [{
-                    label: '山东',
-                    value: 'shan_dong'
-                }, {
-                    label: '浙江',
-                    value: 'zhe_jiang'
-                }, {
-                    label: '江苏',
-                    value: 'jiang_su'
-                }],
-                cityEnum: ['jinan', 'yantai', 'qingdao'],
+                provinceEnum: [],
+                cityEnum: [],
+                cityEnumEx:[],
 
                 //对应的后台是实体类 或者query_dto
                 person: {
@@ -131,6 +157,17 @@
 
 
             }
+        },
+        computed: {
+            homeAddressEx:function () {
+                       return this.person.homeAddress.city
+                           .map(i => this.cityEnumEx
+                               .find(o=> o.value === i).label)
+                           .join("==")
+                    //return this .person.homeAddress.city.join("==")
+
+            },
+
         },
         methods: {
             /*箭头函数与其上下文代码共享相同的词法this*/
@@ -161,6 +198,42 @@
                     }
                 };
                 this.person = person1;
+            },
+            articleGetOne:function(){
+                this.$http({
+                        baseURL:"http://127.0.0.1:8899/",
+                        url:"/seller/Seller_537141",
+                        method:"get",
+
+                    }
+                ).then(({data}) => this.$message.success(JSON.stringify(data)))
+                    .catch(console.log)
+            },
+
+            articlePublish:function () {
+                var dataS = {
+                    "articleCode": "",
+                    "articleType": "food",
+                    "id": 0,
+                    "price": 55,
+                    "seller": {
+                        "id": 12,
+                        "member": {
+                            "balance": 0,
+                            "nickName": "string"
+                        },
+                        "sellerCode": "Seller_537141"
+                    }
+                };
+
+                this.$http({
+                    baseURL:"http://127.0.0.1:8899/",
+                    url:"/article",
+                    method:"put",
+                    data:dataS
+                    }
+                ).then(({data}) => this.$message.success(JSON.stringify(data)))
+                    .catch(console.log)
             }
         }
     }

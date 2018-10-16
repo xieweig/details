@@ -1,18 +1,18 @@
 <template>
     <div>
         <el-button type="success" icon="el-icon-edit" @click="getAll">select * from person</el-button>
-        <el-table :data="persons" stripe="true" highlight-current-row="true">
+        <el-table :data="persons"  height="200px"  stripe="true" highlight-current-row="true">
 
             <el-table-column prop="basic.name"
                              label="姓名" width="200px"></el-table-column>
             <el-table-column prop="basic.age"
-                             label="年龄" width="50px"></el-table-column>
+                             label="年龄" width="150px"></el-table-column>
             <el-table-column prop="basic.sex"
-                             label="性别" width="50px"></el-table-column>
+                             label="性别" width="150px"></el-table-column>
             <el-table-column prop="role.studentCode"
                              label="学号" width="200px"></el-table-column>
             <el-table-column prop="role.grade"
-                             label="班级" width="50px"></el-table-column>
+                             label="班级" width="150px"></el-table-column>
             <el-table-column prop="role.major"
                              label="主修技能" width="100px"></el-table-column>
             <el-table-column label="AGE" width="80px">
@@ -25,7 +25,7 @@
             </el-table-column>
             <!-- <el-table-column prop="role.majorEx(role.major)"
                               label="好看的主修技能"></el-table-column>-->
-            <el-table-column label="好看的主修技能" width="250px">
+            <el-table-column label="好看的主修技能" width="250px" fixed="left">
                 <template slot-scope="personsView">
                     <el-button-group>
                         <el-button type="warning" icon="el-icon-edit"
@@ -38,7 +38,7 @@
                     </el-button-group>
                 </template>
             </el-table-column>
-            <el-table-column label="see Major">
+            <el-table-column label="see Major" width="200px">
                 <template slot-scope="scope">
                     <el-select v-model="scope.row.role.major">
                         <el-option v-for="item in majors"
@@ -46,13 +46,14 @@
                     </el-select>
                 </template>
             </el-table-column>
-            <el-table-column label="Major Map">
+            <el-table-column label="Major Map" width="200px">
                 <template slot-scope="scope">
                     <span>{{majorEx(scope.row.role.major)}}</span>
                 </template>
             </el-table-column>
 
         </el-table>
+
         <el-table :data="persons">
             <el-table-column property="basic.name"
                              label="姓名" width="200px"></el-table-column>
@@ -70,6 +71,7 @@
 
                         <el-dialog :visible.sync="dialogKey" class="el-dialog">
                             <el-form>
+
                                 <el-form-item label="姓名" >
                                     <el-input v-model="person.basic.name"></el-input>
                                 </el-form-item>

@@ -14,7 +14,7 @@
         <el-menu-item index="/first">第一页</el-menu-item>
         <el-menu-item index="/second">第二页</el-menu-item>
         <el-menu-item index="/third">第三页</el-menu-item>
-
+          <el-menu-item index="/fourth">第四页</el-menu-item>
       </el-menu>
     </div>
     <router-view/>
